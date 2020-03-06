@@ -53,6 +53,23 @@
     "Basic IDE cmbasic executable location"
     :group 'basic-ide)
 
+  (defcustom basic-ide-x64-executable "/usr/bin/x64"
+    "Basic IDE x64 VICE executable "
+    :group 'basic-ide
+    )
+
+;;;###autoload
+  (defcustom basic-ide-x64-kernal "/usr/lib/vice/C64/kernal"
+    "Basic IDE x64 VICE kernal file "
+    :group 'basic-ide
+    )
+
+;;;###autoload
+  (defcustom basic-ide-vice-simon-disk "/home/fermin/Programming/emfibasic/simon.d64"
+    "Basic IDE simon's basic disk location"
+    :group 'basic-ide
+    )
+
   (flycheck-define-checker basic
     "A syntax checker for the Bas 2.5 interpreter http://www.moria.de/~michael/bas/"
     :command ("bas" (eval (buffer-file-name)) )
@@ -77,8 +94,6 @@
   (setq company-backends '(company-basic-ide-backend))
   (company-mode)
 
-
-  
   (defun basic-ide-eval-region ()
     "Evaluate the current selected region and output the resulto to a custom buffer."
     (interactive)
@@ -102,7 +117,7 @@
   (defun basic-ide-local-execute (&optional use-region output-buffer-name)
     "Executa basic code locally wih cbmbasic https://github.com/mist64/cbmbasic"
     (interactive)
-    (setq local-buffer-name (if output-buffer-name (format output-buffer-name) "cbmbasic-output"))
+    (setq local-buffer-name (if output-buffer-name (format output-buffer-name) (format "cbmbasic-output")))
     ;; (setq selected-region basic-ide-selected-region)
     (setq command-output (shell-command-to-string (concat basic-ide-cbmbasic-executable " "
 							  (if use-region
@@ -123,6 +138,47 @@
       (erase-buffer)
       (insert command-output)
       ))
+
+  (defun basic-ide-vice-start-session ()
+    "Start a vice session and open the emulator http://vice-emu.sourceforge.net/ "
+    (interactive)
+    (async-shell-command (concat  basic-ide-x64-executable " -remotemonitor -kernal " basic-ide-x64-kernal " ") nil nil)
+    )
+
+  (defun basic-ide-vice-execute ()
+    "Basic IDE execute current buffer in vice emulator, it needs to be active with start-vice-session."
+    (interactive)
+    (shell-command-to-string (concat "petcat -wsimon -o /tmp/f.prg " (buffer-file-name)))
+    (shell-command-to-string  "echo 'cl' | netcat -N  localhost 6510 ")
+    (shell-command-to-string (concat "echo" " 'l \"/tmp/f.prg\" 0' | netcat -N localhost 6510"))
+    )
+  (defun basic-ide-vice-simon-basic ()
+    "Basic IDE enables simon's basic commands to be executed inside VICE emulator"
+    (interactive)
+    (shell-command-to-string (concat  "echo " "'attach \"" basic-ide-vice-simon-disk "\" 8' | netcat -N localhost 6510 "))
+    (shell-command-to-string   "echo 'load \"*\" 8' | netcat -N localhost 6510 ")
+    )
+
+  ;;   (defvar yasnippet-snippets-dir
+  ;;   (expand-file-name
+  ;;    "snippets"
+  ;;    (file-name-directory
+  ;;     ;; Copied from ‘f-this-file’ from f.el.
+  ;;     (cond
+  ;;      (load-in-progress load-file-name)
+  ;;      ((and (boundp 'byte-compile-current-file) byte-compile-current-file)
+  ;;       byte-compile-current-file)
+  ;;      (:else (buffer-file-name))))))
+
+  ;; ;;;###autoload
+  ;; (defun yasnippet-snippets-initialize ()
+  ;;   "Load the `yasnippet-snippets' snippets directory."
+  ;;   ;; NOTE: we add the symbol `yasnippet-snippets-dir' rather than its
+  ;;   ;; value, so that yasnippet will automatically find the directory
+  ;;   ;; after this package is updated (i.e., moves directory).
+  ;;   (add-to-list 'yas-snippet-dirs 'yasnippet-snippets-dir t)
+  ;;   (yas-load-directory yasnippet-snippets-dir t))
+
 
   ;; (defclass my-helm-class (helm-source-sync)
   ;;   ((candidates :initform 'basic-backend)))
