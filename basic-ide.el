@@ -44,7 +44,14 @@
   :group 'basic-ide
 
 ;;;###autoload
-  (defcustom basic-ide-completion-backend (split-string "END    FOR     NEXT    DATA    INPUT#  INPUT   DIM     READ    LET     GOTO    RUN     IF      RESTORE GOSUB   RETURN  REM     STOP    ON      WAIT    LOAD    SAVE    VERIFY  DEF     POKE    PRINT#  PRINT   CONT    LIST    CLR     CMD     SYS     OPEN    CLOSE   GET     NEW     TAB(    TO      FN      SPC(    THEN    NOT     STEP    +       -       *       /       ^       AND     OR      >       =       <SGN    INT     ABS     USR     FRE     POS     SQR     RND     LOG     EXP     COS     SIN     TAN     ATN     PEEK    LEN     STR$    VAL     ASC     CHR$    LEFT$   RIGHT$  MID$    GO      ~" split-string-default-separators t)
+  (defcustom basic-ide-completion-backend '( "as" "call" "def" "defbol" "defdbl" "defint" "defsng" "defstr"
+                "dim" "do" "else" "elseif" "end" "endif" "error" "exit" "fn"
+                "for" "gosub" "goto" "if" "loop" "next" "on" "step" "repeat"
+                "return" "sub" "then" "to" "until" "wend" "while" "and" "cls" "data" "input" "let" "mat" "mod" "not" "or"
+                "peek" "poke" "print" "read" "restore" "troff" "tron" "xor" "abs" "asc" "atn" "cdbl" "cint" "chr$" "command$" "cos" "exp"
+                "fix" "instr" "int" "lcase$" "len" "left$" "log" "log10" "mid$"
+                "pi" "right$" "rnd" "sgn" "sin" "sqr" "str$" "tab" "tan"
+                "ucase$" "usr" "val" "false" "true")
     "Basic IDE keywords for completion."
     :group 'basic-ide)
 
@@ -119,19 +126,20 @@
     (interactive)
     (setq local-buffer-name (if output-buffer-name (format output-buffer-name) (format "cbmbasic-output")))
     ;; (setq selected-region basic-ide-selected-region)
-    (setq command-output (shell-command-to-string (concat basic-ide-cbmbasic-executable " "
-							  (if use-region
-							      (progn (write-region
-								      (progn
-									(if (use-region-p)
-									    (setq pos1 (region-beginning) pos2 (region-end))
-									  (progn
-									    ((setq )etq bds (bounds-of-thing-at-point 'symbol))
-									    (setq (point)os1 (car bds) pos2 (cdr bds))))
-									(format "%s" (filter-buffer-substring pos1 pos2)))
-								      nil "/tmp/basic_ide_region")
-								     (format "/tmp/basic_ide_region"))
-							    (buffer-file-name) ))))
+    (setq command-output (shell-command-to-string
+			  (concat basic-ide-cbmbasic-executable " "
+				  (if use-region
+				      (progn (write-region
+					      (progn
+						(if (use-region-p)
+						    (setq pos1 (region-beginning) pos2 (region-end))
+						  (progn
+						    ((setq )etq bds (bounds-of-thing-at-point 'symbol))
+						    (setq (point)os1 (car bds) pos2 (cdr bds))))
+						(format "%s" (filter-buffer-substring pos1 pos2)))
+					      nil "/tmp/basic_ide_region")
+					     (format "/tmp/basic_ide_region"))
+				    (buffer-file-name) ))))
     (with-current-buffer
 	(get-buffer-create
          local-buffer-name)
@@ -152,11 +160,16 @@
     (shell-command-to-string  "echo 'cl' | netcat -N  localhost 6510 ")
     (shell-command-to-string (concat "echo" " 'l \"/tmp/f.prg\" 0' | netcat -N localhost 6510"))
     )
-  (defun basic-ide-vice-simon-basic ()
+  (defun basic-ide-vice-load-simon-basic ()
     "Basic IDE enables simon's basic commands to be executed inside VICE emulator"
     (interactive)
     (shell-command-to-string (concat  "echo " "'attach \"" basic-ide-vice-simon-disk "\" 8' | netcat -N localhost 6510 "))
     (shell-command-to-string   "echo 'load \"*\" 8' | netcat -N localhost 6510 ")
+    )
+  (defun basic-ide-vice-reset ()
+    "Basic IDE restart from the current VICE session"
+    (interactive)
+    (shell-command-to-string  "echo 'reset 0' | netcat -N localhost 6510 ")
     )
 
   ;;   (defvar yasnippet-snippets-dir
