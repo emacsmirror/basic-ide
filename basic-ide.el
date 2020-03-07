@@ -167,7 +167,7 @@
     (shell-command-to-string   "echo 'load \"*\" 8' | netcat -N localhost 6510 ")
     )
   (defun basic-ide-vice-reset ()
-    "Basic IDE restart from the current VICE session"
+    "Basic IDE restart the current VICE session"
     (interactive)
     (shell-command-to-string  "echo 'reset 0' | netcat -N localhost 6510 ")
     )
