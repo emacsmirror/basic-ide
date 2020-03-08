@@ -33,6 +33,10 @@
 (require 'helm)
 (require 'flycheck)
 
+
+;; ----------------------------------------------------------------------------
+;; BASIC minor mode:
+;; ----------------------------------------------------------------------------
 (defgroup basic-ide nil
   "Drupal configuration."
   :prefix "basic-ide-"
@@ -43,15 +47,19 @@
   :lighter " Basic IDE"
   :group 'basic-ide
 
+  ;; ----------------------------------------------------------------------------
+  ;; Customization:
+  ;; ----------------------------------------------------------------------------
+
 ;;;###autoload
   (defcustom basic-ide-completion-backend '( "as" "call" "def" "defbol" "defdbl" "defint" "defsng" "defstr"
-                "dim" "do" "else" "elseif" "end" "endif" "error" "exit" "fn"
-                "for" "gosub" "goto" "if" "loop" "next" "on" "step" "repeat"
-                "return" "sub" "then" "to" "until" "wend" "while" "and" "cls" "data" "input" "let" "mat" "mod" "not" "or"
-                "peek" "poke" "print" "read" "restore" "troff" "tron" "xor" "abs" "asc" "atn" "cdbl" "cint" "chr$" "command$" "cos" "exp"
-                "fix" "instr" "int" "lcase$" "len" "left$" "log" "log10" "mid$"
-                "pi" "right$" "rnd" "sgn" "sin" "sqr" "str$" "tab" "tan"
-                "ucase$" "usr" "val" "false" "true")
+				    "dim" "do" "else" "elseif" "end" "endif" "error" "exit" "fn"
+				    "for" "gosub" "goto" "if" "loop" "next" "on" "step" "repeat"
+				    "return" "sub" "then" "to" "until" "wend" "while" "and" "cls" "data" "input" "let" "mat" "mod" "not" "or"
+				    "peek" "poke" "print" "read" "restore" "troff" "tron" "xor" "abs" "asc" "atn" "cdbl" "cint" "chr$" "command$" "cos" "exp"
+				    "fix" "instr" "int" "lcase$" "len" "left$" "log" "log10" "mid$"
+				    "pi" "right$" "rnd" "sgn" "sin" "sqr" "str$" "tab" "tan"
+				    "ucase$" "usr" "val" "false" "true")
     "Basic IDE keywords for completion."
     :group 'basic-ide)
 
@@ -60,6 +68,7 @@
     "Basic IDE cmbasic executable location"
     :group 'basic-ide)
 
+;;;###autoload
   (defcustom basic-ide-x64-executable "/usr/bin/x64"
     "Basic IDE x64 VICE executable "
     :group 'basic-ide
@@ -77,6 +86,11 @@
     :group 'basic-ide
     )
 
+
+  ;; ----------------------------------------------------------------------------
+  ;; Flycheck checker:
+  ;; ----------------------------------------------------------------------------
+
   (flycheck-define-checker basic
     "A syntax checker for the Bas 2.5 interpreter http://www.moria.de/~michael/bas/"
     :command ("bas" (eval (buffer-file-name)) )
@@ -87,6 +101,10 @@
   (add-to-list 'flycheck-checkers 'basic)
   (flycheck-mode)
 
+
+  ;; ----------------------------------------------------------------------------
+  ;; Company mode: 
+  ;; ----------------------------------------------------------------------------
 
   (defun company-basic-ide-backend (command &optional arg &rest ignored)
     (interactive (list 'interactive))
@@ -100,6 +118,11 @@
         basic-ide-completion-backend))))
   (setq company-backends '(company-basic-ide-backend))
   (company-mode)
+
+  ;; ----------------------------------------------------------------------------
+  ;; Common functions:
+  ;; ----------------------------------------------------------------------------
+ 
 
   (defun basic-ide-eval-region ()
     "Evaluate the current selected region and output the resulto to a custom buffer."
@@ -126,26 +149,31 @@
     (interactive)
     (setq local-buffer-name (if output-buffer-name (format output-buffer-name) (format "cbmbasic-output")))
     ;; (setq selected-region basic-ide-selected-region)
-    (setq command-output (shell-command-to-string
-			  (concat basic-ide-cbmbasic-executable " "
-				  (if use-region
-				      (progn (write-region
-					      (progn
-						(if (use-region-p)
-						    (setq pos1 (region-beginning) pos2 (region-end))
-						  (progn
-						    ((setq )etq bds (bounds-of-thing-at-point 'symbol))
-						    (setq (point)os1 (car bds) pos2 (cdr bds))))
-						(format "%s" (filter-buffer-substring pos1 pos2)))
-					      nil "/tmp/basic_ide_region")
-					     (format "/tmp/basic_ide_region"))
-				    (buffer-file-name) ))))
+    (setq command-output
+	  (shell-command-to-string
+	   (concat basic-ide-cbmbasic-executable " "
+		   (if use-region
+		       (progn (write-region
+			       (progn
+				 (if (use-region-p)
+				     (setq pos1 (region-beginning) pos2 (region-end))
+				   (progn
+				     ((setq )etq bds (bounds-of-thing-at-point 'symbol))
+				     (setq (point)os1 (car bds) pos2 (cdr bds))))
+				 (format "%s" (filter-buffer-substring pos1 pos2)))
+			       nil "/tmp/basic_ide_region")
+			      (format "/tmp/basic_ide_region"))
+		     (buffer-file-name) ))))
     (with-current-buffer
 	(get-buffer-create
          local-buffer-name)
       (erase-buffer)
       (insert command-output)
       ))
+
+  ;; ----------------------------------------------------------------------------
+  ;; Common functions:
+  ;; ----------------------------------------------------------------------------
 
   (defun basic-ide-vice-start-session ()
     "Start a vice session and open the emulator http://vice-emu.sourceforge.net/ "
@@ -172,34 +200,9 @@
     (shell-command-to-string  "echo 'reset 0' | netcat -N localhost 6510 ")
     )
 
-  ;;   (defvar yasnippet-snippets-dir
-  ;;   (expand-file-name
-  ;;    "snippets"
-  ;;    (file-name-directory
-  ;;     ;; Copied from ‘f-this-file’ from f.el.
-  ;;     (cond
-  ;;      (load-in-progress load-file-name)
-  ;;      ((and (boundp 'byte-compile-current-file) byte-compile-current-file)
-  ;;       byte-compile-current-file)
-  ;;      (:else (buffer-file-name))))))
 
-  ;; ;;;###autoload
-  ;; (defun yasnippet-snippets-initialize ()
-  ;;   "Load the `yasnippet-snippets' snippets directory."
-  ;;   ;; NOTE: we add the symbol `yasnippet-snippets-dir' rather than its
-  ;;   ;; value, so that yasnippet will automatically find the directory
-  ;;   ;; after this package is updated (i.e., moves directory).
-  ;;   (add-to-list 'yas-snippet-dirs 'yasnippet-snippets-dir t)
-  ;;   (yas-load-directory yasnippet-snippets-dir t))
-
-
-  ;; (defclass my-helm-class (helm-source-sync)
-  ;;   ((candidates :initform 'basic-backend)))
-
-  ;; (helm :sources (helm-make-source "test" 'my-helm-class)
-  ;;       :buffer "*helm test*")
   )
 
-;;;###autoload
 (provide 'basic-ide)
 ;;; basic-ide.el ends here
+
