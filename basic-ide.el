@@ -1,4 +1,4 @@
-;;; basic-ide.el --- c64 BASIC IDE
+;;; basic-ide.el --- c64 BASIC IDE                 -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020  Fermin Munoz
 
@@ -6,8 +6,8 @@
 ;; Created: 20 Feb 2020
 ;; Version: 0.0.1
 ;; Keywords: languages, basic
-;; URL: https://github.com/emacs-php/poly-php
-;; Package-Requires: ((emacs "25")(helm "3.6.0")  (basic-mode "0.4.2") (cl-lib "0.6")(company "1.21.4") (flycheck) )
+;; URL: https://gitlab.com/sasanidas/emacs-c64-basic-ide
+;; Package-Requires: ((emacs "25")(helm "3.6.0")  (basic-mode "0.4.2") (cl-lib "0.6")(company "1.21.4") (flycheck "31") )
 ;; License: GPL-3.0-or-later
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -25,7 +25,8 @@
 
 ;;; Commentary:
 
-;; This package integrate useful tools to manage and edit c64 basic projects
+;; This package provide a minor mode that integrates with the `basic-mode'
+;; adding completion and integration with VICE
 
 ;;; Code:
 (require 'cl-lib)
@@ -131,7 +132,7 @@
     )
 
   (defun basic-ide-interactive-execute ()
-    "Evaluate the current buffer and open an interactive eshell buffer"
+    "Evaluate the current buffer and open an interactive eshell buffer with cbmbasic"
     (interactive)
     (setq file--name (buffer-file-name))
     (eshell)
