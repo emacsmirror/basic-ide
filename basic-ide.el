@@ -111,7 +111,6 @@
   ;; ----------------------------------------------------------------------------
 
   (defun basic-ide-company-backend (command &optional arg &rest ignored)
-    (interactive (list 'interactive))
     (cl-case command
       (interactive (company-begin-backend 'basic-ide-completion-backend))
       (prefix (and (eq major-mode 'basic-mode)
@@ -146,31 +145,30 @@
       (end-of-buffer)
       (yank)))
 
-  (defun basic-ide-local-execute (&optional use-region output-buffer-name)
-    "Execute basic code locally wih cbmbasic https://github.com/mist64/cbmbasic"
+ (defun basic-ide-local-execute (&optional use-region output-buffer-name)
+    "Executa basic code locally wih cbmbasic https://github.com/mist64/cbmbasic"
     (interactive)
-    (setq local-buffer-name (if output-buffer-name (format output-buffer-name) (format "cbmbasic-output")))
+    (setq local-buffer-name (if output-buffer-name (format output-buffer-name) "cbmbasic-output"))
     ;; (setq selected-region basic-ide-selected-region)
-    (setq command-output
-	  (shell-command-to-string
-	   (concat basic-ide-cbmbasic-executable " "
-		   (if use-region
-		       (progn (write-region
-			       (progn
-				 (if (use-region-p)
-				     (setq pos1 (region-beginning) pos2 (region-end))
-				   (progn
-				     ((setq )etq bds (bounds-of-thing-at-point 'symbol))
-				     (setq (point)os1 (car bds) pos2 (cdr bds))))
-				 (format "%s" (filter-buffer-substring pos1 pos2)))
-			       nil "/tmp/basic_ide_region")
-			      (format "/tmp/basic_ide_region"))
-		     (buffer-file-name) ))))
+    (setq command-output (shell-command-to-string (concat basic-ide-cbmbasic-executable " "
+							  (if use-region
+							      (progn (write-region
+								      (progn
+									(if (use-region-p)
+									    (setq pos1 (region-beginning) pos2 (region-end))
+									  (progn
+									    ((setq )etq bds (bounds-of-thing-at-point 'symbol))
+									    (setq (point)os1 (car bds) pos2 (cdr bds))))
+									(format "%s" (filter-buffer-substring pos1 pos2)))
+								      nil "/tmp/basic_ide_region")
+								     (format "/tmp/basic_ide_region"))
+							    (buffer-file-name) ))))
     (with-current-buffer
 	(get-buffer-create
          local-buffer-name)
       (erase-buffer)
       (insert command-output)))
+
 
   ;; ----------------------------------------------------------------------------
   ;; Vice functions:
