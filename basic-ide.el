@@ -1,4 +1,4 @@
-;;; basic-ide.el --- c64 BASIC IDE                 -*- lexical-binding: t; -*-
+;;; basic-ide.el --- BASIC IDE c64                  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020  Fermin Munoz
 
@@ -25,7 +25,7 @@
 
 ;;; Commentary:
 
-;; This is a minor mode for emacs, that provide some IDE features for the basic-mode
+;; This is a minor mode for Emacs, that provide some IDE features for the basic-mode
 ;; , it has flycheck,company and helm support, it also provide an easy way to integrate Simon’s BASIC.
 ;; Provide 3 interpreters cbmbasic,Bas 2.5 and of course VICE.
 ;; For the moment, it’s focus on the c64 support.
@@ -76,22 +76,19 @@
   (defcustom basic-ide-x64-executable "/usr/bin/x64"
     "Basic IDE x64 VICE executable "
     :type 'string
-    :group 'basic-ide
-    )
+    :group 'basic-ide)
 
 ;;;###autoload
   (defcustom basic-ide-x64-kernal "/usr/lib/vice/C64/kernal"
     "Basic IDE x64 VICE kernal file "
     :type 'string
-    :group 'basic-ide
-    )
+    :group 'basic-ide)
 
 ;;;###autoload
   (defcustom basic-ide-vice-simon-disk ""
     "Basic IDE simon's basic disk location"
     :type 'string
-    :group 'basic-ide
-    )
+    :group 'basic-ide)
 
 
   ;; ----------------------------------------------------------------------------
@@ -110,10 +107,10 @@
 
 
   ;; ----------------------------------------------------------------------------
-  ;; Company mode: 
+  ;; Company mode:
   ;; ----------------------------------------------------------------------------
 
-  (defun company-basic-ide-backend (command &optional arg &rest ignored)
+  (defun basic-ide-company-backend (command &optional arg &rest ignored)
     (interactive (list 'interactive))
     (cl-case command
       (interactive (company-begin-backend 'basic-ide-completion-backend))
@@ -123,7 +120,7 @@
        (cl-remove-if-not
         (lambda (c) (string-prefix-p arg c))
         basic-ide-completion-backend))))
-  (setq company-backends '(company-basic-ide-backend))
+  (setq company-backends '(basic-ide-company-backend))
   (company-mode)
 
   ;; ----------------------------------------------------------------------------
@@ -134,8 +131,7 @@
   (defun basic-ide-eval-region ()
     "Evaluate the current selected region and output the resulto to a custom buffer."
     (interactive)
-    (basic-ide-local-execute t "cbmbasic-region-output")
-    )
+    (basic-ide-local-execute t "cbmbasic-region-output"))
 
   (defun basic-ide-interactive-execute ()
     "Evaluate the current buffer and open an interactive eshell buffer with cbmbasic"
@@ -148,8 +144,7 @@
       (insert (concat basic-ide-cbmbasic-executable " " file--name))
       (eshell-send-input)
       (end-of-buffer)
-      (yank))
-    )
+      (yank)))
 
   (defun basic-ide-local-execute (&optional use-region output-buffer-name)
     "Execute basic code locally wih cbmbasic https://github.com/mist64/cbmbasic"
@@ -175,8 +170,7 @@
 	(get-buffer-create
          local-buffer-name)
       (erase-buffer)
-      (insert command-output)
-      ))
+      (insert command-output)))
 
   ;; ----------------------------------------------------------------------------
   ;; Vice functions:
@@ -185,30 +179,23 @@
   (defun basic-ide-vice-start-session ()
     "Start a vice session and open the emulator http://vice-emu.sourceforge.net/ "
     (interactive)
-    (async-shell-command (concat  basic-ide-x64-executable " -remotemonitor -kernal " basic-ide-x64-kernal " ") nil nil)
-    )
+    (async-shell-command (concat  basic-ide-x64-executable " -remotemonitor -kernal " basic-ide-x64-kernal " ") nil nil))
 
   (defun basic-ide-vice-execute ()
     "Basic IDE execute current buffer in vice emulator, it needs to be active with start-vice-session."
     (interactive)
     (shell-command-to-string (concat "petcat -wsimon -o /tmp/f.prg " (buffer-file-name)))
     (shell-command-to-string  "echo 'cl' | netcat -N  localhost 6510 ")
-    (shell-command-to-string (concat "echo" " 'l \"/tmp/f.prg\" 0' | netcat -N localhost 6510"))
-    )
+    (shell-command-to-string (concat "echo" " 'l \"/tmp/f.prg\" 0' | netcat -N localhost 6510")))
   (defun basic-ide-vice-load-simon-basic ()
     "Basic IDE enables simon's basic commands to be executed inside VICE emulator"
     (interactive)
     (shell-command-to-string (concat  "echo " "'attach \"" basic-ide-vice-simon-disk "\" 8' | netcat -N localhost 6510 "))
-    (shell-command-to-string   "echo 'load \"*\" 8' | netcat -N localhost 6510 ")
-    )
+    (shell-command-to-string   "echo 'load \"*\" 8' | netcat -N localhost 6510 "))
   (defun basic-ide-vice-reset ()
     "Basic IDE restart the current VICE session"
     (interactive)
-    (shell-command-to-string  "echo 'reset 0' | netcat -N localhost 6510 ")
-    )
-
-
-  )
+    (shell-command-to-string  "echo 'reset 0' | netcat -N localhost 6510 ")))
 
 (provide 'basic-ide)
 ;;; basic-ide.el ends here
