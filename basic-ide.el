@@ -25,8 +25,10 @@
 
 ;;; Commentary:
 
-;; This package provide a minor mode that integrates with the `basic-mode'
-;; adding completion and integration with VICE
+;; This is a minor mode for emacs, that provide some IDE features for the basic-mode
+;; , it has flycheck,company and helm support, it also provide an easy way to integrate Simon’s BASIC.
+;; Provide 3 interpreters cbmbasic,Bas 2.5 and of course VICE.
+;; For the moment, it’s focus on the c64 support.
 
 ;;; Code:
 (require 'cl-lib)
@@ -65,25 +67,29 @@
     :group 'basic-ide)
 
 ;;;###autoload
-  (defcustom basic-ide-cbmbasic-executable "/home/fermin/Programming/emfibasic/cbmbasic/cbmbasic"
+  (defcustom basic-ide-cbmbasic-executable "cbmbasic"
     "Basic IDE cmbasic executable location"
+    :type 'string
     :group 'basic-ide)
 
 ;;;###autoload
   (defcustom basic-ide-x64-executable "/usr/bin/x64"
     "Basic IDE x64 VICE executable "
+    :type 'string
     :group 'basic-ide
     )
 
 ;;;###autoload
   (defcustom basic-ide-x64-kernal "/usr/lib/vice/C64/kernal"
     "Basic IDE x64 VICE kernal file "
+    :type 'string
     :group 'basic-ide
     )
 
 ;;;###autoload
-  (defcustom basic-ide-vice-simon-disk "/home/fermin/Programming/emfibasic/simon.d64"
+  (defcustom basic-ide-vice-simon-disk ""
     "Basic IDE simon's basic disk location"
+    :type 'string
     :group 'basic-ide
     )
 
@@ -146,7 +152,7 @@
     )
 
   (defun basic-ide-local-execute (&optional use-region output-buffer-name)
-    "Executa basic code locally wih cbmbasic https://github.com/mist64/cbmbasic"
+    "Execute basic code locally wih cbmbasic https://github.com/mist64/cbmbasic"
     (interactive)
     (setq local-buffer-name (if output-buffer-name (format output-buffer-name) (format "cbmbasic-output")))
     ;; (setq selected-region basic-ide-selected-region)
@@ -173,7 +179,7 @@
       ))
 
   ;; ----------------------------------------------------------------------------
-  ;; Common functions:
+  ;; Vice functions:
   ;; ----------------------------------------------------------------------------
 
   (defun basic-ide-vice-start-session ()
