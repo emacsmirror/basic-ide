@@ -42,7 +42,7 @@ Clone this repository and add the basic-ide.el file to the load path.
 	(add-to-list 'load-path "path/to/basic-ide.el")
 	(require 'basic-ide)
 ``` 
-And to use it launch
+And to use it, launch
 
 ``` lisp
 	(basic-ide-mode)
@@ -63,11 +63,12 @@ by the set command:
 		basic-ide-x64-executable "/usr/bin/x64"
 		basic-ide-x64-kernal "/usr/lib/vice/C64/kernal"
 		basic-ide-vice-simon-disk "/path/to/simonbasic/d64/disc"
-		basic-ide-completion-backend '("completion" "words" )
+		basic-ide-completion-backend '("completion" "words" ))
 ``` 
 
 ## Features
 ### Flycheck
+![Flycheck gif](examples/basic-ide-logo.gif "Flycheck gif")
 It support the basic checker, created for this project, and it is enabled automatically 
 
 ``` lisp
@@ -104,12 +105,16 @@ It provide basic completion with company, with the basic keyword set, it is also
 It support cbmbasic for execute the entire file, or some areas.
 
 #### Cbmbasic commands
-Creates an eshell buffer and execute the execute the entire file, it can be use if you have some interactive function.
+
+![Basic local execute](examples/basic-local-execute.gif "Local execute gif")
+Evaluate the entire file without interaction
 
 ``` lisp
-	(basic-ide-interactive-execute)
+	(basic-ide-local-execute)
 ``` 
+
 ---
+![Basic eval region](examples/basic-eval-region.gif "Basic region evaluation gif")
 Evaluate the selected region without interaction, and display the result in the output buffer
 
 ``` lisp
@@ -117,14 +122,16 @@ Evaluate the selected region without interaction, and display the result in the 
 ``` 
 
 ---
-Evaluate the entire file without interaction
+![Basic interactive](examples/basic-interactive.gif "Basic intreactive gif")
+Creates an eshell buffer and execute the execute the entire file, it can be use if you have some interaction in your program. 
 
 ``` lisp
-	(basic-ide-local-execute)
+	(basic-ide-interactive-execute)
 ``` 
 
-
 ### VICE
+![Basic VICE](examples/basic-vice.gif "Basic VICE gif")
+
 It support decent VICE integration, can execute the file and the simon's basic library.
 
 #### VICE commands
