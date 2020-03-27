@@ -1,5 +1,6 @@
-# Basic IDE
-Basic IDE for emacs
+<p align="center">
+  <img src="https://gitlab.com/sasanidas/emacs-c64-basic-ide/-/raw/master/examples/basic-ide-logo.png" alt="Basic IDE Logo"/>
+</p>
 
 ## Contents
 - [Requirements](#requirements)
