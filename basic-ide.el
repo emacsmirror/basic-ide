@@ -50,48 +50,7 @@
   :lighter " Basic IDE"
   :group 'basic-ide
 
-  ;; ----------------------------------------------------------------------------
-  ;; Customization:
-  ;; ----------------------------------------------------------------------------
-
-;;;###autoload
-  (defcustom basic-ide-completion-backend '( "as" "call" "def" "defbol" "defdbl" "defint" "defsng" "defstr"
-				    "dim" "do" "else" "elseif" "end" "endif" "error" "exit" "fn"
-				    "for" "gosub" "goto" "if" "loop" "next" "on" "step" "repeat"
-				    "return" "sub" "then" "to" "until" "wend" "while" "and" "cls" "data" "input" "let" "mat" "mod" "not" "or"
-				    "peek" "poke" "print" "read" "restore" "troff" "tron" "xor" "abs" "asc" "atn" "cdbl" "cint" "chr$" "command$" "cos" "exp"
-				    "fix" "instr" "int" "lcase$" "len" "left$" "log" "log10" "mid$"
-				    "pi" "right$" "rnd" "sgn" "sin" "sqr" "str$" "tab" "tan"
-				    "ucase$" "usr" "val" "false" "true")
-    "Basic IDE keywords for completion."
-    :group 'basic-ide)
-
-;;;###autoload
-  (defcustom basic-ide-cbmbasic-executable "cbmbasic"
-    "Basic IDE cmbasic executable location"
-    :type 'string
-    :group 'basic-ide)
-
-;;;###autoload
-  (defcustom basic-ide-x64-executable "/usr/bin/x64"
-    "Basic IDE x64 VICE executable "
-    :type 'string
-    :group 'basic-ide)
-
-;;;###autoload
-  (defcustom basic-ide-x64-kernal "/usr/lib/vice/C64/kernal"
-    "Basic IDE x64 VICE kernal file "
-    :type 'string
-    :group 'basic-ide)
-
-;;;###autoload
-  (defcustom basic-ide-vice-simon-disk ""
-    "Basic IDE simon's basic disk location"
-    :type 'string
-    :group 'basic-ide)
-
-
-  ;; ----------------------------------------------------------------------------
+ ;; ----------------------------------------------------------------------------
   ;; Flycheck checker:
   ;; ----------------------------------------------------------------------------
 
@@ -116,11 +75,65 @@
       (prefix (and (eq major-mode 'basic-mode)
                    (company-grab-symbol)))
       (candidates
-       (cl-remove-if-not
-        (lambda (c) (string-prefix-p arg c))
-        basic-ide-completion-backend))))
-  (setq company-backends '(basic-ide-company-backend))
-  (company-mode)
+       (-if-let* ((basic-ide-backend (bound-and-true-p basic-ide-completion-backend) ))
+	   (progn (cl-remove-if-not
+		   (lambda (c) (string-prefix-p arg c))
+		   basic-ide-backend))
+	 '())
+       )))
+  (add-to-list 'company-backends '(basic-ide-company-backend))
+  (company-mode))
+
+  ;; ----------------------------------------------------------------------------
+  ;; Customization:
+  ;; ----------------------------------------------------------------------------
+
+;;;###autoload
+  (defcustom basic-ide-completion-backend '( "as" "call" "def" "defbol" "defdbl" "defint" "defsng" "defstr"
+				    "dim" "do" "else" "elseif" "end" "endif" "error" "exit" "fn"
+				    "for" "gosub" "goto" "if" "loop" "next" "on" "step" "repeat"
+				    "return" "sub" "then" "to" "until" "wend" "while" "and" "cls" "data" "input" "let" "mat" "mod" "not" "or"
+				    "peek" "poke" "print" "read" "restore" "troff" "tron" "xor" "abs" "asc" "atn" "cdbl" "cint" "chr$" "command$" "cos" "exp"
+				    "fix" "instr" "int" "lcase$" "len" "left$" "log" "log10" "mid$"
+				    "pi" "right$" "rnd" "sgn" "sin" "sqr" "str$" "tab" "tan"
+				    "ucase$" "usr" "val" "false" "true" "AS" "CALL" "DEF" "DEFBOL" "DEFDBL" "DEFINT" "DEFSNG" "DEFSTR"
+				    "DIM" "DO" "ELSE" "ELSEIF" "END" "ENDIF" "ERROR" "EXIT" "FN"
+				    "FOR" "GOSUB" "GOTO" "IF" "LOOP" "NEXT" "ON" "STEP" "REPEAT"
+				    "RETURN" "SUB" "THEN" "TO" "UNTIL" "WEND" "WHILE" "AND" "CLS" "DATA" "INPUT" "LET" "MAT" "MOD" "NOT" "OR"
+				    "PEEK" "POKE" "PRINT" "READ" "RESTORE" "TROFF" "TRON" "XOR" "ABS" "ASC" "ATN" "CDBL" "CINT" "CHR$" "COMMAND$" "COS" "EXP"
+				    "FIX" "INSTR" "INT" "LCASE$" "LEN" "LEFT$" "LOG" "LOG10" "MID$"
+				    "PI" "RIGHT$" "RND" "SGN" "SIN" "SQR" "STR$" "TAB" "TAN"
+				    "UCASE$" "USR" "VAL" "FALSE" "TRUE")
+    "Basic IDE keywords for completion."
+    :type '(repeat (string "Completion word"))
+    :group 'basic-ide)
+
+;;;###autoload
+  (defcustom basic-ide-cbmbasic-executable "/home/fermin/Programming/emfibasic/cbmbasic/cbmbasic"
+    "Basic IDE cmbasic executable location"
+    :type 'string
+    :group 'basic-ide)
+
+;;;###autoload
+  (defcustom basic-ide-x64-executable "/usr/bin/x64"
+    "Basic IDE x64 VICE executable "
+    :type 'string
+    :group 'basic-ide)
+
+;;;###autoload
+  (defcustom basic-ide-x64-kernal "/usr/lib/vice/C64/kernal"
+    "Basic IDE x64 VICE kernal file "
+    :type 'string
+    :group 'basic-ide)
+
+;;;###autoload
+  (defcustom basic-ide-vice-simon-disk ""
+    "Basic IDE simon's basic disk location"
+    :type 'string
+    :group 'basic-ide)
+
+
+ 
 
   ;; ----------------------------------------------------------------------------
   ;; Common functions:
@@ -135,39 +148,36 @@
   (defun basic-ide-interactive-execute ()
     "Evaluate the current buffer and open an interactive eshell buffer with cbmbasic"
     (interactive)
-    (setq file--name (buffer-file-name))
+    (let* ((file--name (buffer-file-name)))
     (eshell)
     (with-current-buffer "*eshell*"
       (eshell-kill-input)
-      (end-of-buffer)
+      (goto-char (point-max))
       (insert (concat basic-ide-cbmbasic-executable " " file--name))
       (eshell-send-input)
-      (end-of-buffer)
-      (yank)))
+      (goto-char (point-max))
+      (yank))))
+      
 
  (defun basic-ide-local-execute (&optional use-region output-buffer-name)
     "Executa basic code locally wih cbmbasic https://github.com/mist64/cbmbasic"
     (interactive)
-    (setq local-buffer-name (if output-buffer-name (format output-buffer-name) "cbmbasic-output"))
-    ;; (setq selected-region basic-ide-selected-region)
-    (setq command-output (shell-command-to-string (concat basic-ide-cbmbasic-executable " "
-							  (if use-region
-							      (progn (write-region
-								      (progn
-									(if (use-region-p)
-									    (setq pos1 (region-beginning) pos2 (region-end))
-									  (progn
-									    ((setq )etq bds (bounds-of-thing-at-point 'symbol))
-									    (setq (point)os1 (car bds) pos2 (cdr bds))))
-									(format "%s" (filter-buffer-substring pos1 pos2)))
-								      nil "/tmp/basic_ide_region")
-								     (format "/tmp/basic_ide_region"))
-							    (buffer-file-name) ))))
-    (with-current-buffer
-	(get-buffer-create
-         local-buffer-name)
-      (erase-buffer)
-      (insert command-output)))
+    (let* ((basic--region-file (make-temp-file "basic_ide_region"))
+	   (command-output (shell-command-to-string (concat basic-ide-cbmbasic-executable " "
+							    (shell-quote-argument
+							     (if (and use-region (use-region-p))
+								(progn (write-region
+									    (let* ((pos1 (region-beginning)) (pos2 (region-end)))
+									      (filter-buffer-substring pos1 pos2))
+									nil basic--region-file)
+								       basic--region-file)
+							       (buffer-file-name))))))
+	   (local-buffer-name (if output-buffer-name (format output-buffer-name) "cbmbasic-output")))
+      (with-current-buffer
+	   (get-buffer-create
+            local-buffer-name)
+	 (erase-buffer)
+	 (insert command-output))))
 
 
   ;; ----------------------------------------------------------------------------
@@ -175,16 +185,21 @@
   ;; ----------------------------------------------------------------------------
 
   (defun basic-ide-vice-start-session ()
-    "Start a vice session and open the emulator http://vice-emu.sourceforge.net/ "
+    "Start a vice session and open the emulator https://vice-emu.sourceforge.net/ "
     (interactive)
     (async-shell-command (concat  basic-ide-x64-executable " -remotemonitor -kernal " basic-ide-x64-kernal " ") nil nil))
 
   (defun basic-ide-vice-execute ()
     "Basic IDE execute current buffer in vice emulator, it needs to be active with start-vice-session."
     (interactive)
-    (shell-command-to-string (concat "petcat -wsimon -o /tmp/f.prg " (buffer-file-name)))
+    (let* ((prg--temp-file (make-temp-file "f")))
+      (progn
+	(shell-command-to-string (concat "petcat -wsimon -o "
+					 (shell-quote-argument prg--temp-file) " "
+					 (shell-quote-argument (buffer-file-name)) ))
     (shell-command-to-string  "echo 'cl' | netcat -N  localhost 6510 ")
-    (shell-command-to-string (concat "echo" " 'l \"/tmp/f.prg\" 0' | netcat -N localhost 6510")))
+    (shell-command-to-string (concat "echo" " 'l \"" (shell-quote-argument prg--temp-file)
+				     "\" 0' | netcat -N localhost 6510")))))
   (defun basic-ide-vice-load-simon-basic ()
     "Basic IDE enables simon's basic commands to be executed inside VICE emulator"
     (interactive)
@@ -193,7 +208,7 @@
   (defun basic-ide-vice-reset ()
     "Basic IDE restart the current VICE session"
     (interactive)
-    (shell-command-to-string  "echo 'reset 0' | netcat -N localhost 6510 ")))
+    (shell-command-to-string  "echo 'reset 0' | netcat -N localhost 6510 "))
 
 (provide 'basic-ide)
 ;;; basic-ide.el ends here
