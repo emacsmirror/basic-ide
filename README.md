@@ -68,7 +68,9 @@ by the set command:
 
 ## Features
 ### Flycheck
-![Flycheck gif](examples/basic-ide-logo.gif "Flycheck gif")
+![Flycheck gif](https://gitlab.com/sasanidas/emacs-c64-basic-ide/-/raw/master/examples/basic-flycheck.gif "Flycheck gif")
+
+
 It support the basic checker, created for this project, and it is enabled automatically 
 
 ``` lisp
@@ -106,7 +108,9 @@ It support cbmbasic for execute the entire file, or some areas.
 
 #### Cbmbasic commands
 
-![Basic local execute](examples/basic-local-execute.gif "Local execute gif")
+![Basic local execute](https://gitlab.com/sasanidas/emacs-c64-basic-ide/-/raw/master/examples/basic-local-execute.gif "Local execute gif")
+
+
 Evaluate the entire file without interaction
 
 ``` lisp
@@ -114,7 +118,9 @@ Evaluate the entire file without interaction
 ``` 
 
 ---
-![Basic eval region](examples/basic-eval-region.gif "Basic region evaluation gif")
+![Basic eval region](https://gitlab.com/sasanidas/emacs-c64-basic-ide/-/raw/master/examples/basic-eval-region.gif "Basic region evaluation gif")
+
+
 Evaluate the selected region without interaction, and display the result in the output buffer
 
 ``` lisp
@@ -123,6 +129,8 @@ Evaluate the selected region without interaction, and display the result in the 
 
 ---
 ![Basic interactive](examples/basic-interactive.gif "Basic intreactive gif")
+
+
 Creates an eshell buffer and execute the execute the entire file, it can be use if you have some interaction in your program. 
 
 ``` lisp
