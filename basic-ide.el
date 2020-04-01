@@ -35,6 +35,7 @@
 (require 'company)
 (require 'helm)
 (require 'flycheck)
+(require 'eshell)
 
 
 ;; ----------------------------------------------------------------------------
@@ -79,8 +80,7 @@
 	   (progn (cl-remove-if-not
 		   (lambda (c) (string-prefix-p arg c))
 		   basic-ide-backend))
-	 '())
-       )))
+	 '()))))
   (add-to-list 'company-backends '(basic-ide-company-backend))
   (company-mode))
 
