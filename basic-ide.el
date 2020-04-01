@@ -7,7 +7,7 @@
 ;; Version: 0.0.1
 ;; Keywords: languages, basic
 ;; URL: https://gitlab.com/sasanidas/emacs-c64-basic-ide
-;; Package-Requires: ((emacs "25")(helm "3.6.0")  (basic-mode "0.4.2") (cl-lib "0.6")(company "1.21.4") (flycheck "31") )
+;; Package-Requires: ((emacs "25") (helm "1.5.9") (basic-mode "0.4.2") (company "0.9.12") (flycheck "0.22"))
 ;; License: GPL-3.0-or-later
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -212,4 +212,3 @@
 
 (provide 'basic-ide)
 ;;; basic-ide.el ends here
-
