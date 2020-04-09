@@ -48,6 +48,21 @@ And to use it, launch
 	(basic-ide-mode)
 ``` 
 
+
+
+### Quelpa
+	Install [quelpa](https://github.com/quelpa/quelpa) and eval this:
+
+``` lisp
+(quelpa '(basic-ide :fetcher git :url "https://gitlab.com/sasanidas/emacs-c64-basic-ide.git"))
+``` 
+	Add this to the init.el file:
+
+``` lisp
+(require 'basic-ide)
+``` 
+
+
 ### Melpa
 WIP
 
