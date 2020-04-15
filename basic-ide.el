@@ -194,23 +194,23 @@
 ;; FIX: There is an error with the first
 (defun basic-ide--commands ()
   "Perform a petcat command from VICE emulator, and it create a list for later use."
-(let* ((pet--commands (shell-command-to-string (concat basic-ide-petcat-executable " -k" basic-ide-basic-version ))))
-  (s-split "\t" pet--commands)))
+  (let* ((pet--commands (shell-command-to-string (concat basic-ide-petcat-executable " -k" basic-ide-basic-version ))))
+    (s-split "\t" pet--commands)))
 
 
 (defun basic-ide-company-backend (command &optional arg &rest ignored)
   "Function that provide the necessary backend for company completion, it requires COMMAND &optional ARG &rest IGNORED."
   (setq basic-ide-completion-backend (basic-ide--commands))
-    (cl-case command
-      (interactive (company-begin-backend 'basic-ide-completion-backend))
-      (prefix (and (eq major-mode 'basic-mode)
-                   (company-grab-symbol)))
-      (candidates
-       (-if-let* ((basic-ide-backend (bound-and-true-p basic-ide-completion-backend) ))
-	   (progn (cl-remove-if-not
-		   (lambda (c) (string-prefix-p arg c))
-		   basic-ide-backend))
-	 '()))))
+  (cl-case command
+    (interactive (company-begin-backend 'basic-ide-completion-backend))
+    (prefix (and (eq major-mode 'basic-mode)
+                 (company-grab-symbol)))
+    (candidates
+     (-if-let* ((basic-ide-backend (bound-and-true-p basic-ide-completion-backend) ))
+	 (progn (cl-remove-if-not
+		 (lambda (c) (string-prefix-p arg c))
+		 basic-ide-backend))
+       '()))))
 
 ;; ----------------------------------------------------------------------------
 ;; Minor mode definition:
