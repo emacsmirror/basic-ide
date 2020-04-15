@@ -7,7 +7,7 @@
 ;; Version: 0.0.1
 ;; Keywords: languages, basic
 ;; URL: https://gitlab.com/sasanidas/emacs-c64-basic-ide
-;; Package-Requires: ((emacs "25") (helm "1.5.9") (basic-mode "0.4.2") (company "0.9.12") (flycheck "0.22"))
+;; Package-Requires: ((emacs "25") (helm "1.5.9") (basic-mode "0.4.2") (company "0.9.12") (flycheck "0.22") (dash "2.12.0") (f "0.17.0"))
 ;; License: GPL-3.0-or-later
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -36,6 +36,8 @@
 (require 'helm)
 (require 'flycheck)
 (require 'eshell)
+(require 'f)
+(require 'dash)
 
 
 ;; ----------------------------------------------------------------------------
