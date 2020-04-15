@@ -99,12 +99,13 @@
 
 
 (defun basic-ide-eval-region ()
-  "Evaluate the current selected region and output the resulto to a custom buffer."
+  "Evaluate the selected region."
   (interactive)
   (basic-ide-local-execute t "cbmbasic-region-output"))
 
 (defun basic-ide-interactive-execute ()
-  "Evaluate the current buffer and open an interactive eshell buffer with cbmbasic."
+  "Evaluate current buffer and open an interactive eshell.
+And it execute the content with cbmbasic."
   (interactive)
   (let* ((file--name (buffer-file-name)))
     (eshell)
@@ -118,7 +119,9 @@
 
 
 (defun basic-ide-local-execute (&optional use-region output-buffer-name)
-  "Executa basic code locally wih cbmbasic https://github.com/mist64/cbmbasic it has optional parameter USE-REGION and OUTPUT-BUFFER-NAME."
+  "Executa basic code locally wih cbmbasic.
+https://github.com/mist64/cbmbasic it has optional parameter
+USE-REGION and OUTPUT-BUFFER-NAME."
   (interactive)
   (let* ((basic--region-file (make-temp-file "basic_ide_region"))
 	 (command-output (shell-command-to-string (concat basic-ide-cbmbasic-executable " "
@@ -143,12 +146,14 @@
 ;; ----------------------------------------------------------------------------
 
 (defun basic-ide-vice-start-session ()
-  "Start a vice session and open the emulator https://vice-emu.sourceforge.net/ ."
+  "Start a vice session and open the emulator.
+https://vice-emu.sourceforge.net/ ."
   (interactive)
   (async-shell-command (concat  basic-ide-x64-executable " -remotemonitor -kernal " basic-ide-x64-kernal " ") nil nil))
 
 (defun basic-ide-vice-execute ()
-  "Basic IDE execute current buffer in vice emulator, it needs to be active with start-vice-session."
+  "Basic IDE execute current buffer in vice emulator.
+Execute the command basic-ide-vice-start-session first."
   (interactive)
   (let* ((prg--temp-file (make-temp-file "f")))
     (progn
@@ -159,7 +164,7 @@
       (shell-command-to-string (concat "echo" " 'l \"" (shell-quote-argument prg--temp-file)
 				       "\" 0' | netcat -N localhost 6510")))))
 (defun basic-ide-vice-load-simon-basic ()
-  "Basic IDE enables simon's basic commands to be executed inside VICE emulator."
+  "Basic IDE enables simon's basic commands for VICE emulator."
   (interactive)
   (shell-command-to-string (concat  "echo " "'attach \"" basic-ide-vice-simon-disk "\" 8' | netcat -N localhost 6510 "))
   (shell-command-to-string   "echo 'load \"*\" 8' | netcat -N localhost 6510 "))
@@ -177,7 +182,8 @@
 ;; ----------------------------------------------------------------------------
 
 (flycheck-define-checker basic
-  "A syntax checker for the Bas 2.5 interpreter http://www.moria.de/~michael/bas/"
+  "A syntax checker for the Bas 2.5 interpreter
+http://www.moria.de/~michael/bas/"
   :command ("bas" (eval (buffer-file-name)) )
   :error-patterns
   ((error line-start  "Error: " (message) "in line " line " at:" line-end))
@@ -193,13 +199,14 @@
 
 ;; FIX: There is an error with the first
 (defun basic-ide--commands ()
-  "Perform a petcat command from VICE emulator, and it create a list for later use."
+  "Perform a petcat command from VICE for completion."
   (let* ((pet--commands (shell-command-to-string (concat basic-ide-petcat-executable " -k" basic-ide-basic-version ))))
     (s-split "\t" pet--commands)))
 
 
 (defun basic-ide-company-backend (command &optional arg &rest ignored)
-  "Function that provide the necessary backend for company completion, it requires COMMAND &optional ARG &rest IGNORED."
+  "Function that provide the necessary backend for company mode.
+The completion, requires COMMAND &optional ARG &rest IGNORED."
   (setq basic-ide-completion-backend (basic-ide--commands))
   (cl-case command
     (interactive (company-begin-backend 'basic-ide-completion-backend))
@@ -217,7 +224,9 @@
 ;; ----------------------------------------------------------------------------
 
 (define-minor-mode basic-ide-mode
-  "Basic ide minor mode for editing an managing c64 basic files it uses flycheck, helm and company integration to provide IDE features."
+  "Basic ide minor mode for editing an managing c64 basic files
+it uses flycheck, helm and company integration to provide IDE
+features."
   :lighter " Basic IDE"
   :group 'basic-ide
   (add-to-list 'company-backends '(basic-ide-company-backend)))
