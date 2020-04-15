@@ -54,38 +54,32 @@
 ;; Customization:
 ;; ----------------------------------------------------------------------------
 
-;;;###autoload
 (defcustom basic-ide-basic-version "2"
   "Basic version to use in the project."
   :group 'basic-ide
   :type '(choice (const :tag "Basic v2.0" "2")
 		 (const :tag "Basic v2.0 with Simons' Basic" "simon")))
 
-;;;###autoload
 (defcustom basic-ide-petcat-executable "petcat"
   "Basic IDE petcat executable location."
   :type 'string
   :group 'basic-ide)
 
-;;;###autoload
 (defcustom basic-ide-cbmbasic-executable "/home/fermin/Programming/emfibasic/cbmbasic/cbmbasic"
   "Basic IDE cmbasic executable location."
   :type 'string
   :group 'basic-ide)
 
-;;;###autoload
 (defcustom basic-ide-x64-executable "/usr/bin/x64"
   "Basic IDE x64 VICE executable."
   :type 'string
   :group 'basic-ide)
 
-;;;###autoload
 (defcustom basic-ide-x64-kernal "/usr/lib/vice/C64/kernal"
   "Basic IDE x64 VICE kernal file."
   :type 'string
   :group 'basic-ide)
 
-;;;###autoload
 (defcustom basic-ide-vice-simon-disk ""
   "Basic IDE simon's basic disk location."
   :type 'string
