@@ -65,7 +65,7 @@
   :type 'string
   :group 'basic-ide)
 
-(defcustom basic-ide-cbmbasic-executable "/home/fermin/Programming/emfibasic/cbmbasic/cbmbasic"
+(defcustom basic-ide-cbmbasic-executable "cbmbasic"
   "Basic IDE cmbasic executable location."
   :type 'string
   :group 'basic-ide)
