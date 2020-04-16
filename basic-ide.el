@@ -7,7 +7,7 @@
 ;; Version: 0.0.1
 ;; Keywords: languages, basic
 ;; URL: https://gitlab.com/sasanidas/emacs-c64-basic-ide
-;; Package-Requires: ((emacs "25") (helm "1.5.9") (basic-mode "0.4.2") (company "0.9.12") (flycheck "0.22") (dash "2.12.0") (f "0.17.0"))
+;; Package-Requires: ((emacs "25") (basic-mode "0.4.2") (company "0.9.12") (flycheck "0.22") (dash "2.12.0") (f "0.17.0"))
 ;; License: GPL-3.0-or-later
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -35,7 +35,6 @@
 
 (require 'cl-lib)
 (require 'company)
-(require 'helm)
 (require 'flycheck)
 (require 'eshell)
 (require 'f)
@@ -198,7 +197,7 @@ http://www.moria.de/~michael/bas/"
 (defun basic-ide--commands ()
   "Perform a petcat command from VICE for completion."
   (let* ((pet--commands (shell-command-to-string (concat basic-ide-petcat-executable " -k" basic-ide-basic-version ))))
-    (s-split "\t" pet--commands)))
+    (split-string "\t" pet--commands)))
 
 
 (defun basic-ide-company-backend (command &optional arg &rest ignored)
