@@ -190,6 +190,9 @@ http://www.moria.de/~michael/bas/"
 ;; Company completion:
 ;; ----------------------------------------------------------------------------
 
+(defvar basic-ide-completion-backend
+  (basic-ide--commands)
+  "Company completion keyword list.")
 
 ;; FIX: There is an error with the first
 (defun basic-ide--commands ()
@@ -201,17 +204,15 @@ http://www.moria.de/~michael/bas/"
 (defun basic-ide-company-backend (command &optional arg &rest ignored)
   "Function that provide the necessary backend for company mode.
 The completion, requires COMMAND &optional ARG &rest IGNORED."
-  (setq basic-ide-completion-backend (basic-ide--commands))
   (cl-case command
     (interactive (company-begin-backend 'basic-ide-completion-backend))
     (prefix (and (eq major-mode 'basic-mode)
                  (company-grab-symbol)))
     (candidates
-     (-if-let* ((basic-ide-backend (bound-and-true-p basic-ide-completion-backend) ))
-	 (progn (cl-remove-if-not
+     (-when-let* ((basic-ide-backend basic-ide-completion-backend ))
+	 (cl-remove-if-not
 		 (lambda (c) (string-prefix-p arg c))
-		 basic-ide-backend))
-       '()))))
+		 basic-ide-backend)))))
 
 ;; ----------------------------------------------------------------------------
 ;; Minor mode definition:
