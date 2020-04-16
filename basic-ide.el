@@ -146,7 +146,7 @@ https://vice-emu.sourceforge.net/ ."
 
 (defun basic-ide-vice-execute ()
   "Basic IDE execute current buffer in vice emulator.
-Execute the command basic-ide-vice-start-session first."
+Execute the command `basic-ide-vice-start-session' first."
   (interactive)
   (let* ((prg--temp-file (make-temp-file "f")))
     (progn
@@ -189,16 +189,16 @@ http://www.moria.de/~michael/bas/"
 ;; Company completion:
 ;; ----------------------------------------------------------------------------
 
-(defvar basic-ide-completion-backend
-  (basic-ide--commands)
-  "Company completion keyword list.")
 
 ;; FIX: There is an error with the first
 (defun basic-ide--commands ()
   "Perform a petcat command from VICE for completion."
   (let* ((pet--commands (shell-command-to-string (concat basic-ide-petcat-executable " -k" basic-ide-basic-version ))))
-    (split-string "\t" pet--commands)))
+    (split-string  pet--commands "\t")))
 
+(defvar basic-ide-completion-backend
+  (basic-ide--commands)
+  "Backend list for company mode.")
 
 (defun basic-ide-company-backend (command &optional arg &rest ignored)
   "Function that provide the necessary backend for company mode.
@@ -208,7 +208,7 @@ The completion, requires COMMAND &optional ARG &rest IGNORED."
     (prefix (and (eq major-mode 'basic-mode)
                  (company-grab-symbol)))
     (candidates
-     (-when-let* ((basic-ide-backend basic-ide-completion-backend ))
+     (-when-let* ((basic-ide-backend  basic-ide-completion-backend ))
 	 (cl-remove-if-not
 		 (lambda (c) (string-prefix-p arg c))
 		 basic-ide-backend)))))
@@ -221,7 +221,7 @@ The completion, requires COMMAND &optional ARG &rest IGNORED."
   "Basic ide minor mode for editing an managing c64 basic files
 it uses flycheck, helm and company integration to provide IDE
 features."
-  :lighter " Basic IDE"
+  :lighter "Basic IDE"
   :group 'basic-ide
   (add-to-list 'company-backends '(basic-ide-company-backend)))
 
