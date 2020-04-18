@@ -26,8 +26,8 @@
 ;;; Commentary:
 
 ;; This is a minor mode for Emacs, that provide some IDE features for the basic-mode
-;; , it has flycheck,company and helm support, it also provide an easy way to integrate Simon’s BASIC.
-;; Provide 3 interpreters cbmbasic,Bas 2.5 and of course VICE.
+;; it has flycheck and company  support, it also provide an easy way to integrate Simon’s BASIC and others similar libraries
+;; Provide 3 interpreters cbmbasic, Bas 2.5 and of course VICE.
 ;; For the moment, it’s focus on the c64 support.
 
 ;;; Code:
@@ -156,11 +156,13 @@ Execute the command `basic-ide-vice-start-session' first."
       (shell-command-to-string  "echo 'cl' | netcat -N  localhost 6510 ")
       (shell-command-to-string (concat "echo" " 'l \"" (shell-quote-argument prg--temp-file)
 				       "\" 0' | netcat -N localhost 6510")))))
+
 (defun basic-ide-vice-load-simon-basic ()
   "Basic IDE enables simon's basic commands for VICE emulator."
   (interactive)
   (shell-command-to-string (concat  "echo " "'attach \"" basic-ide-vice-simon-disk "\" 8' | netcat -N localhost 6510 "))
   (shell-command-to-string   "echo 'load \"*\" 8' | netcat -N localhost 6510 "))
+
 (defun basic-ide-vice-reset ()
   "Basic IDE restart the current VICE session."
   (interactive)
