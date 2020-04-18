@@ -45,7 +45,7 @@
 ;; BASIC minor mode:
 ;; ----------------------------------------------------------------------------
 (defgroup basic-ide nil
-  "Drupal configuration."
+  "Basic IDE group declaration"
   :prefix "basic-ide-"
   :group 'languages)
 
@@ -112,7 +112,7 @@ And it execute the content with cbmbasic."
 
 
 (defun basic-ide-local-execute (&optional use-region output-buffer-name)
-  "Executa basic code locally wih cbmbasic.
+  "Execute basic code locally with cbmbasic.
 https://github.com/mist64/cbmbasic it has optional parameter
 USE-REGION and OUTPUT-BUFFER-NAME."
   (interactive)
