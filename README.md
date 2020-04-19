@@ -2,6 +2,8 @@
   <img src="https://gitlab.com/sasanidas/emacs-c64-basic-ide/-/raw/master/examples/basic-ide-logo.png" alt="Basic IDE Logo"/>
 </p>
 
+[![MELPA](https://melpa.org/packages/basic-ide-badge.svg)](https://melpa.org/#/basic-ide)
+
 ## Contents
 - [Requirements](#requirements)
 - [Installation](#installation)
