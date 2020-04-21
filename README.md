@@ -25,7 +25,7 @@ For the moment, it's focus on the c64 support.
 
 ## Requirements
 
-- emacs <=25
+- emacs >= 25
 - helm 3.6.0
 - basic-mode 0.4.2
 - company-mode 1.21.4
