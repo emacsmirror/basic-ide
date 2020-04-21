@@ -3,6 +3,7 @@
 </p>
 
 [![MELPA](https://melpa.org/packages/basic-ide-badge.svg)](https://melpa.org/#/basic-ide)
+[![MELPA Stable](https://stable.melpa.org/packages/basic-ide-badge.svg?x=1)](https://stable.melpa.org/#/dumb-jump)
 
 ## Contents
 - [Requirements](#requirements)
