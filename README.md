@@ -7,6 +7,7 @@
 - [Installation](#installation)
   - [From source](#source)
   - [Melpa](#melpa)
+- [Configuration](#configuration)
 - [Features](#features)
   - [Flycheck checker](#flycheck)
   - [Company completion](#company)
@@ -64,10 +65,10 @@ And to use it, launch
 
 
 ### Melpa
-WIP
 
+	M-x package-install RET basic-ide RET to install basic-ide from [MELPA](https://melpa.org).
 
-## Custom variables
+## Configuration
 There are some variable that can be customize to set the executable routes correctly.
 You can customize it with the default customize feature that emacs has by default or
 by the set command:
@@ -77,8 +78,19 @@ by the set command:
 		basic-ide-cbmbasic-executable "/path/to/executable/cbmbasic"
 		basic-ide-x64-executable "/usr/bin/x64"
 		basic-ide-x64-kernal "/usr/lib/vice/C64/kernal"
-		basic-ide-vice-simon-disk "/path/to/simonbasic/d64/disc"
-		basic-ide-completion-backend '("completion" "words" ))
+		basic-ide-vice-simon-disk "/path/to/simonbasic/d64/disc")
+``` 
+
+After that, it is necessary to call flycheck and company mode, this is a quick-start using a hook with basic-mode:
+
+
+``` lisp
+(add-hook 'basic-mode-hook (lambda ()
+			     (require 'basic-ide)
+			     (basic-ide-mode)
+			     (flycheck-mode)
+			     (company-mode)))
+	
 ``` 
 
 ## Features
