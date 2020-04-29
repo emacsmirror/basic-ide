@@ -2,6 +2,9 @@
   <img src="https://gitlab.com/sasanidas/emacs-c64-basic-ide/-/raw/master/examples/basic-ide-logo.png" alt="Basic IDE Logo"/>
 </p>
 
+[![MELPA](https://melpa.org/packages/basic-ide-badge.svg)](https://melpa.org/#/basic-ide)
+[![MELPA Stable](https://stable.melpa.org/packages/basic-ide-badge.svg?x=1)](https://stable.melpa.org/#/dumb-jump)
+
 ## Contents
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -24,7 +27,7 @@ For the moment, it's focus on the c64 support.
 
 ## Requirements
 
-- emacs <=25
+- emacs >= 25
 - helm 3.6.0
 - basic-mode 0.4.2
 - company-mode 1.21.4
