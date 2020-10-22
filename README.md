@@ -69,7 +69,9 @@ And to use it, launch
 
 ### Melpa
 
-	M-x package-install RET basic-ide RET to install basic-ide from [MELPA](https://melpa.org).
+	M-x package-install RET basic-ide RET to install basic-ide from MELPA.
+  
+
 
 ## Configuration
 There are some variable that can be customize to set the executable routes correctly.
