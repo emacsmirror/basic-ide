@@ -161,6 +161,8 @@ https://vice-emu.sourceforge.net/ ."
   (async-shell-command (concat  basic-ide-x64-executable " -remotemonitor -kernal " basic-ide-x64-kernal " ") nil nil))
 
 (defun basic-ide-vice-execute ()
+  "Basic IDE execute current buffer in vice emulator.
+Execute the command `basic-ide-vice-start-session' first."
   (interactive)
   (let* ((prg--temp-file (make-temp-file "f")))
     (progn
