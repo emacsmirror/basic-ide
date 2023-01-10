@@ -169,20 +169,20 @@ Execute the command `basic-ide-vice-start-session' first."
       (shell-command-to-string (concat basic-ide-petcat-executable " -wsimon -o "
 				       (shell-quote-argument prg--temp-file) " "
 				       (shell-quote-argument (buffer-file-name))))
-      (basic-ide-netcat-send "echo 'cl'")
-      (basic-ide-netcat-send (concat "echo" " 'l \"" (shell-quote-argument prg--temp-file)
+      (basic-ide-netcat-send "'cl'")
+      (basic-ide-netcat-send (concat "'l \"" (shell-quote-argument prg--temp-file)
      				     "\" 0'")))))
 
 (defun basic-ide-vice-load-simon-basic ()
   "Basic IDE enables simon's basic commands for VICE emulator."
   (interactive)
-  (basic-ide-netcat-send (concat  "echo " "'attach \"" basic-ide-vice-simon-disk "\" 8'"))
-  (basic-ide-netcat-send "echo 'load \"*\" 8'"))
+  (basic-ide-netcat-send (concat "'attach \"" basic-ide-vice-simon-disk "\" 8'"))
+  (basic-ide-netcat-send "'load \"*\" 8'"))
 
 (defun basic-ide-vice-reset ()
   "Basic IDE restart the current VICE session."
   (interactive)
-  (basic-ide-netcat-send "echo 'reset 0'"))
+  (basic-ide-netcat-send "'reset 0'"))
 
 ;; ----------------------------------------------------------------------------
 ;; Flycheck checker:
